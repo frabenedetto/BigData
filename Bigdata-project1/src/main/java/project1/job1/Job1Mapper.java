@@ -26,7 +26,6 @@ public class Job1Mapper extends MapReduceBase implements Mapper<LongWritable, Te
 			throws IOException {
 			
 			String line = value.toString();
-			//line = line.replaceAll("\\d+(?:[.,]\\d+)*\\s*", "");
 			StringTokenizer tokenizer = new StringTokenizer(line, ",", false);
 			tokenizer.nextToken();
 			while(tokenizer.hasMoreTokens()){
