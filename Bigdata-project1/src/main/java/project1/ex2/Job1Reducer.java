@@ -1,7 +1,6 @@
 package project1.ex2;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -36,16 +35,6 @@ public class Job1Reducer extends MapReduceBase implements Reducer<Text, Text, Te
 		}
 	
 		
-		/*
-		while(arg1.hasNext()){
-			arg2.collect(arg0, arg1.next());
-		}
-		*/
-		/*
-		for(Text date : date2quantity.keySet()){
-			arg2.collect(arg0, date);
-		}
-		*/
 		arg2.collect(arg0, new Text(dates2quantityString));
 		
 	}
