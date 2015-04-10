@@ -11,15 +11,17 @@ import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileOutputFormat;
 
 
-public class Job1 
+public class Main 
 {
     public static void main( String[] args )
     {
-    	JobConf conf1 = new JobConf(Job1.class);
+    	Path temp = new Path("temp");
+    	
+    	JobConf conf1 = new JobConf(Main.class);
     	conf1.setJobName("FirstExercise_job1");   
     	
     	FileInputFormat.addInputPath(conf1, new Path(args[0]));
-        FileOutputFormat.setOutputPath(conf1, new Path(args[1]));
+        FileOutputFormat.setOutputPath(conf1, temp);
         
         conf1.setMapperClass(Job1Mapper.class);
         conf1.setReducerClass(Job1Reducer.class);
@@ -36,6 +38,30 @@ public class Job1
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        JobConf conf2 = new JobConf(Main.class);
+        conf2.setJobName("FirstExercise_job2");
+        
+        FileInputFormat.addInputPath(conf2, temp);
+        FileOutputFormat.setOutputPath(conf2, new Path(args[1]));
+        
+        conf2.setMapperClass(Job2Mapper.class);
+        conf2.setReducerClass(Job2Reducer.class);
+        
+        conf2.setMapOutputKeyClass(IntWritable.class);
+        conf2.setMapOutputValueClass(Text.class);
+        
+        conf2.setOutputKeyClass(IntWritable.class);
+        conf2.setOutputKeyComparatorClass(DescendingOrderComparator.class);
+        conf2.setOutputValueClass(Text.class);
+        
+        try {
+			JobClient.runJob(conf2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
     	
 
     }
