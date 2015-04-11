@@ -2,20 +2,19 @@ package project1.ex3;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
+
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.Mapper;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Mapper;
 
-public class Job1Mapper extends MapReduceBase implements Mapper<LongWritable, Text, ProductPair, IntWritable>{
+
+public class Job1Mapper extends Mapper<LongWritable, Text, ProductPair, IntWritable>{
 
 	private IntWritable one = new IntWritable(1);
 	
 	public void map(LongWritable arg0, Text value,
-			OutputCollector<ProductPair, IntWritable> arg2, Reporter arg3) throws IOException {
+			Context ctx) throws IOException, InterruptedException {
 		
 		String line = value.toString();
 		StringTokenizer tokenizer = new StringTokenizer(line, ",", false);
@@ -28,7 +27,7 @@ public class Job1Mapper extends MapReduceBase implements Mapper<LongWritable, Te
 			pp.setProductLeft(new Text(insToken));
 			insToken = tokenizer.nextToken();
 			pp.setProductRight(new Text(insToken));
-			arg2.collect(pp, one);
+			ctx.write(pp, one);
 		}
 	}
 

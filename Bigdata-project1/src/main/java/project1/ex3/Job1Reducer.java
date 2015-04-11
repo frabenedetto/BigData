@@ -1,30 +1,25 @@
 package project1.ex3;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reducer;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Reducer;
 
-public class Job1Reducer extends MapReduceBase implements Reducer<ProductPair, IntWritable, Text, IntWritable>{
-
-    private final static IntWritable SUM = new IntWritable();
+public class Job1Reducer extends Reducer<ProductPair, IntWritable, Text, IntWritable>{
 
 	
-	public void reduce(ProductPair arg0, Iterator<IntWritable> arg1,
-			OutputCollector<Text, IntWritable> arg2, Reporter arg3)
-			throws IOException {
+	
+	public void reduce(ProductPair arg0, Iterable<IntWritable> arg1,
+			Context ctx)
+			throws IOException, InterruptedException {
 
 		int sum = 0;
-		while(arg1.hasNext()){
-			sum+=arg1.next().get();
+		for(IntWritable value: arg1) {
+			sum+=value.get();
 		}
-		SUM.set(sum);
-		arg2.collect(new Text(arg0.toString()), SUM);
+		
+		ctx.write(new Text(arg0.toString()), new IntWritable(sum));
 		
 	}
 

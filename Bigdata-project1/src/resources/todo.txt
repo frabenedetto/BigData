@@ -1,0 +1,10 @@
+ex1
+-aggiungere un combiner
+
+ex2
+-combiner
+
+
+ex3
+-combiner
+-leggere insiemi di linee e passarle ad un unico mapper per poi filtrare

@@ -6,7 +6,7 @@ import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableComparator;
 
 public class DescendingOrderComparator extends WritableComparator{
-	 protected DescendingOrderComparator() {
+	 public DescendingOrderComparator() {
 	        super(IntWritable.class, true);
 	    }   
 	
