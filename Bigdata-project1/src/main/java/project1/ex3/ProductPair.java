@@ -66,8 +66,8 @@ public class ProductPair implements WritableComparable<ProductPair>{
 	public boolean equals(Object o) {
 		if (o instanceof ProductPair) {
             ProductPair pair = (ProductPair) o;
-            return productLeft.equals(pair.getProductLeft())
-                    && productRight.equals(pair.getProductRight());
+            return (productLeft.equals(pair.getProductLeft())
+                    && productRight.equals(pair.getProductRight()));
         }
         return false;
 	}
