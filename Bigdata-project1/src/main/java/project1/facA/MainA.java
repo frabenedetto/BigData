@@ -19,7 +19,7 @@ import org.apache.hadoop.util.ToolRunner;
 		    Path temp1 = new Path("tempA");
 		    Path output = new Path(args[1]);
 		    Configuration conf = getConf();
-		    
+		/*    
 		    Job job1 = new Job(conf, "ex-a");
 		    FileInputFormat.addInputPath(job1, input);
 		    FileOutputFormat.setOutputPath(job1, temp1);
@@ -38,7 +38,7 @@ import org.apache.hadoop.util.ToolRunner;
 		      System.out.println("Job1 failed, exiting");
 		      return -1;
 		    }
-		
+		*/
 		    Job job2 = new Job(conf, "ex-a");
 		    FileInputFormat.setInputPaths(job2, temp1);
 		    FileOutputFormat.setOutputPath(job2, output);
@@ -52,7 +52,7 @@ import org.apache.hadoop.util.ToolRunner;
 		    job2.setMapOutputKeyClass(Text.class);
 		    job2.setMapOutputValueClass(Product2QuantityPair.class);
 		    
-		    succ = job2.waitForCompletion(true);
+		    boolean succ = job2.waitForCompletion(true);
 		    if (! succ) {
 		      System.out.println("Job2 failed, exiting");
 		      return -1;
