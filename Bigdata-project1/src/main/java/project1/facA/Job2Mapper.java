@@ -27,10 +27,10 @@ public class Job2Mapper extends Mapper<LongWritable, Text, Text, Product2Quantit
 			ctx.write(productLeft, p1);
 			//if the couple is (a,a)->q don't insert it again, while if is (a,b -> q) write the b -> [a, q] in the context
 			if(!productLeft.equals(productRight)){
-			//generate second key->value
-			Product2QuantityPair p2 = new Product2QuantityPair(productLeft, quantity);
-			ctx.write(productRight, p2);
-			}
+				//generate second key->value
+				Product2QuantityPair p2 = new Product2QuantityPair(productLeft, quantity);
+				ctx.write(productRight, p2);
+				}
 		}
 		}
 	
