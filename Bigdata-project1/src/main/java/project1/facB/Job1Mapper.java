@@ -13,7 +13,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 
-public class Job1Mapper extends Mapper<LongWritable, Text, HashSet<String>, IntWritable>{
+public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 
 	private IntWritable one = new IntWritable(1);
 	
@@ -80,11 +80,24 @@ public class Job1Mapper extends Mapper<LongWritable, Text, HashSet<String>, IntW
 		
 		for(HashSet<HashSet<String>> hs: productSets){
 			for(HashSet<String> hs_s: hs){
-				ctx.write(hs_s, one);
+				ctx.write(new Text(setToString(hs_s)), one);
 			}
 		}
 		
 		
+	}
+	
+	private String setToString(HashSet<String> hs){
+		StringBuilder str= new StringBuilder();
+		boolean first = true;
+		for(String s: hs){
+			if(!first)
+				str.append(',');
+			str.append(s);
+			first = false;
+		}
+		
+		return '(' + str.toString() + ')';
 	}
 
 }
