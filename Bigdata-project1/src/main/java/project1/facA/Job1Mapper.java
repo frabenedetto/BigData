@@ -2,21 +2,16 @@ package project1.facA;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
-
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Mapper.Context;
 
-import project1.ex3.ProductPair;
-
-public class Job1Mapper extends
-		Mapper<LongWritable, Text, Text, Text> {
-		
+public class Job1Mapper extends Mapper<LongWritable, Text, ProductPair, IntWritable> {
 	
+	private IntWritable one = new IntWritable(1);
+
 	public void map(LongWritable arg0, Text value,
 			Context ctx) throws IOException, InterruptedException {
 		
@@ -29,16 +24,10 @@ public class Job1Mapper extends
 		while(tokenizer.hasMoreTokens()){
 			tokens.add(tokenizer.nextToken());
 			}
-		
-		Text i_tmp = new Text("0");
-		
-		for(String s : tokens){
-			ctx.write(i_tmp, new Text(s));
-		}
-		
+				
 		//generate the productPairs and insert them in the context
-				for(int i=0;i<tokens.size()-1;i++){
-					for(int j=i+1;j<tokens.size();j++){
+				for(int i=0;i<tokens.size();i++){
+					for(int j=i;j<tokens.size();j++){
 						String p1 = tokens.get(i);
 						String p2 = tokens.get(j);
 						ProductPair pp = null;
