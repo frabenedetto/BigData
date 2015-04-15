@@ -2,6 +2,9 @@ package project1.facB;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.io.IntWritable;
@@ -10,7 +13,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 
-public class Job1Mapper extends Mapper<LongWritable, Text, IntWritable, IntWritable>{
+public class Job1Mapper extends Mapper<LongWritable, Text, HashSet<String>, IntWritable>{
 
 	private IntWritable one = new IntWritable(1);
 	
@@ -22,16 +25,65 @@ public class Job1Mapper extends Mapper<LongWritable, Text, IntWritable, IntWrita
 		//date not needed
 		tokenizer.nextToken();
 		
-		//conteggio prodotti negli scontrini
-		int i=0;
+		//raccolgo i token
+		List<String> tokens = new ArrayList<String>();
 		while(tokenizer.hasMoreTokens()){
-			i++;
+			String t = tokenizer.nextToken();
+			tokens.add(t);
+		}
+		
+		//array che contiene in 0 le coppie, 1 le triple e 2 le quadruple
+		List<HashSet<HashSet<String>>> productSets = new ArrayList<HashSet<HashSet<String>>>(3);
+		
+		//genero gli insiemi che conterranno le coppie, le triple e le quadruple; uso gli hashset per eliminare eventuali doppi.
+		for(int i=0; i<productSets.size(); i++){
+			productSets.add(new HashSet<HashSet<String>>());
+		}
+		
+		//indice per accedere ai diversi set
+		int index = 0; 
+		
+		//copia dei token per fare il primo accoppiamento
+		List<String> tokensCopy = new ArrayList<String>(tokens);
+		
+		//per ogni token genero insiemi di 2 elementi
+		for (String s: tokens){
+			for(String t: tokensCopy){
+				HashSet<String> prodTmp = new HashSet<String>();
+				prodTmp.add(s);
+				prodTmp.add(t);
+				if(prodTmp.size() == 2)
+					productSets.get(0).add(prodTmp);
 			}
+		}
 		
-		if(i<5)
-			ctx.write(new IntWritable(0), one);
+		// per ogni token prendo gli insiemi di due elementi e genero insiemi di tre elementi
+		for(String s: tokens){
+			for(HashSet<String> set: productSets.get(0)){
+				HashSet<String> prodTmp = new HashSet<String>();
+				prodTmp.add(s);
+				prodTmp.addAll(set);
+				if(prodTmp.size() == 3)
+					productSets.get(1).add(prodTmp);
+			}
+		}
 		
-		ctx.write
+		for(String s: tokens){
+			for(HashSet<String> set: productSets.get(1)){
+				HashSet<String> prodTmp = new HashSet<String>();
+				prodTmp.add(s);
+				prodTmp.addAll(set);
+				if(prodTmp.size() == 4)
+					productSets.get(1).add(prodTmp);
+			}
+		}
+		
+		for(HashSet<HashSet<String>> hs: productSets){
+			for(HashSet<String> hs_s: hs){
+				ctx.write(hs_s, one);
+			}
+		}
+		
 		
 	}
 
