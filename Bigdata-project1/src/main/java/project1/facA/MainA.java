@@ -48,6 +48,8 @@ import org.apache.hadoop.util.ToolRunner;
 		    job2.setMapperClass(Job2Mapper.class);
 		    job2.setReducerClass(Job2Reducer.class);
 		    
+		    //job2.setNumReduceTasks(0);
+		    
 		    job2.setInputFormatClass(TextInputFormat.class);
 		    job2.setMapOutputKeyClass(Text.class);
 		    job2.setMapOutputValueClass(Product2QuantityPair.class);

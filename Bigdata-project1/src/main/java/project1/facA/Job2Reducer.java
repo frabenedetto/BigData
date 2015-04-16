@@ -13,20 +13,21 @@ public class Job2Reducer extends Reducer<Text, Product2QuantityPair, Text, IntWr
 		public void reduce(Text arg0, Iterable<Product2QuantityPair> arg1,
 				Context ctx)
 				throws IOException, InterruptedException {
-			
+			double num = 0;
 			ArrayList<Product2QuantityPair> pairs = new ArrayList<Product2QuantityPair>();
+			
+			/*aggiungi la coppia solo se il prodotto è diverso da quello della chiave
+			 * altrimenti prendine la quantità che verrà usata come numeratore per 
+			 * il calcolo del valore della frazione finale*/
 			for(Product2QuantityPair pair: arg1){
-				pairs.add(pair);
+				Product2QuantityPair ins = new Product2QuantityPair(pair.getProduct(), pair.getQuantity());
+				if(!(ins.getProduct().equals(arg0)))
+					pairs.add(ins);
+				else
+					num = ins.getQuantity().get();
 			}
 			
-			/*get the product-quantity pair of the key(that is a product)*/
-			Product2QuantityPair toRemove = new Product2QuantityPair();
-			toRemove.setProduct(arg0);
-			Product2QuantityPair pairOfKey = pairs.remove(pairs.indexOf(toRemove));
-			//num of the final fraction
-			double num =  pairOfKey.getQuantity().get();
 			
-		
 			if(pairs.size()>0){
 				//generate all the couples (a, x) -> Qa/Qx
 				for(Product2QuantityPair pq: pairs) {
@@ -40,6 +41,7 @@ public class Job2Reducer extends Reducer<Text, Product2QuantityPair, Text, IntWr
 			else {
 				ctx.write(arg0, new IntWritable(0));
 			}
+			
 			
 		}
 }

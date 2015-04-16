@@ -34,14 +34,14 @@ public class Product2QuantityPair implements WritableComparable<Product2Quantity
 	}
 	
 	public int hashcode() {
-		return product.hashCode();
+		return product.hashCode()+quantity.hashCode();
 	}
 	
 	public boolean equals(Object o) {
 		if (o instanceof Product2QuantityPair) {
             Product2QuantityPair pair = (Product2QuantityPair) o;
             return (product.equals(pair.getProduct())
-                    );
+                    && (quantity.equals(pair.getQuantity())));
         }
         return false;
 	}
