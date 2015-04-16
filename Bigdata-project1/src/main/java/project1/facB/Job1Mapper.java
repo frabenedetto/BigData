@@ -2,8 +2,8 @@ package project1.facB;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -40,8 +40,6 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 			productSets.add(new HashSet<HashSet<String>>());
 		}
 		
-		//indice per accedere ai diversi set
-		int index = 0; 
 		
 		//copia dei token per fare il primo accoppiamento
 		List<String> tokensCopy = new ArrayList<String>(tokens);
@@ -57,6 +55,8 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 			}
 		}
 		
+		
+		
 		// per ogni token prendo gli insiemi di due elementi e genero insiemi di tre elementi
 		for(String s: tokens){
 			for(HashSet<String> set: productSets.get(0)){
@@ -68,6 +68,8 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 			}
 		}
 		
+		
+		
 		for(String s: tokens){
 			for(HashSet<String> set: productSets.get(1)){
 				HashSet<String> prodTmp = new HashSet<String>();
@@ -77,6 +79,7 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 					productSets.get(2).add(prodTmp);
 			}
 		}
+
 		
 		for(HashSet<HashSet<String>> hs: productSets){
 			for(HashSet<String> hs_s: hs){
