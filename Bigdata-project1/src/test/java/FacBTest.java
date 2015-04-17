@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 public class FacBTest {
 
 	public static void main(String[] args){
-		String line = "2015-11-14,pesce,uova,latte";
+		String line = "2015-11-14,pesce,latte,uova,pane";
 		StringTokenizer tokenizer = new StringTokenizer(line, ",", false);
 		//date not needed
 		tokenizer.nextToken();
