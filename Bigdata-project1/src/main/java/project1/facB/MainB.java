@@ -5,13 +5,14 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+
+import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider.Text;
 
 
 
@@ -27,7 +28,6 @@ public class MainB extends Configured implements Tool{
 	    FileOutputFormat.setOutputPath(job1, output);
 	    
 	    job1.setJarByClass(MainB.class);
-	    
 	    
 	    job1.setMapperClass(Job1Mapper.class);
 	    job1.setReducerClass(Job1Reducer.class);
@@ -48,11 +48,16 @@ public class MainB extends Configured implements Tool{
 	  }
 
 	  public static void main(String[] args) throws Exception {
-	    if (args.length != 2) {
-	      System.exit(-1);
-	    }
-	    int res = ToolRunner.run(new Configuration(), new MainB(), args);
-	    System.exit(res);
+		  Configuration conf = new Configuration();
+		    Job job = Job.getInstance(conf, "word count");
+		    job.setJarByClass(MainB.class);
+		    job.setMapperClass(project1.facB.Job1Mapper.class);
+		    job.setReducerClass(project1.facB.Job1Reducer.class);
+		    job.setOutputKeyClass(Text.class);
+		    job.setOutputValueClass(IntWritable.class);
+		    FileInputFormat.addInputPath(job, new Path(args[0]));
+		    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		    System.exit(job.waitForCompletion(true) ? 0 : 1);
 	  }
 	
 }
