@@ -27,7 +27,7 @@ public class Accoppia extends EvalFunc<DataBag> {
 			if(input.size()>1){
 
 				for(int i=0; i<input.size(); i++){
-					String i_s = new String(converter.toBytes((DataByteArray) input.get(0)), "UTF-8");
+					String i_s = new String(converter.toBytes((DataByteArray) input.get(i)), "UTF-8");
 					for (int j=i+1; j<input.size(); j++){
 						String j_s = new String(converter.toBytes((DataByteArray) input.get(j)), "UTF-8");
 						Tuple tmp = mTupleFactory.newTuple(2);

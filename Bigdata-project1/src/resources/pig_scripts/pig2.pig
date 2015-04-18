@@ -1,7 +1,7 @@
 file = LOAD '/home/francesco/BigData/hw/exPig/inputFiles/esempio.txt' USING TextLoader() AS (line:chararray);
 
  /*seleziona solo gli scontrini del primo trimestre*/
-just_first_trimester = FOREACH (filter file by  (INDEXOF($0, '2015-1-')!=-1 OR INDEXOF($0, '2015-2-')!=-1 OR INDEXOF($0, '2015-3-')!=-1)) GENERATE $0;
+just_first_trimester = FOREACH (filter file by  (INDEXOF($0, '-1-')!=-1 OR INDEXOF($0, '-2-')!=-1 OR INDEXOF($0, '-3-')!=-1)) GENERATE $0;
 
 /*elimina il giorno dalla data*/
 cleaned_data = FOREACH just_first_trimester GENERATE CONCAT(CONCAT(SUBSTRING($0, 0, 6), ','), $0);
