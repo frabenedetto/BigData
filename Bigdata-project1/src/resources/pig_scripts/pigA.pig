@@ -1,4 +1,4 @@
-register /home/francesco/BigData/hw/exPig/UDFs/myUdf.jar
+REGISTER /home/francesco/BigData/hw/exPig/UDFs/myUdf.jar
 
 /*carica il file*/
 file = LOAD '/home/francesco/BigData/hw/exPig/inputFiles/esempio1.txt' USING  PigStorage(',');
@@ -24,9 +24,14 @@ crossed = CROSS cleaned, cleaned1;
 /*filtra le coppie prodotto-date--prodotto-date con prodotto uguale. (es uova->(date)-uova->(date))*/
 filtered = FILTER crossed BY $0 != $2;
 
-/*genera (a,b)->(dataA Inters dataB / dataA)*/
-result = FOREACH filtered GENERATE $0 as a, $2 as b, COUNT($1) as countA, $1 as datesA, $3 as datesB;
-result = FOREACH filtered GENERATE $0 as a, $2 as b, COUNT($1) as countA, TOBAG($1,$3) as dadb;
+/*genera (a,b)->(dataA,dataB)*/
+partial_result = FOREACH filtered GENERATE $0 as a, $2 as b, COUNT($1) as countA, TOBAG($1,$3) as dadb;
+
+/*genera il risultato finale*/
+result = FOREACH partial_result GENERATE project1.udf.IntersezioneDate();
+
+
+
 
 
 
