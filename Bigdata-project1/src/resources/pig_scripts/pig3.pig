@@ -1,23 +1,15 @@
-REGISTER /home/khorda/Scrivania/myudf.jar
+REGISTER /Users/khorda/Documents/Universita/BigData/myudf.jar
 
-myinput = LOAD '/home/khorda/Documenti/esempio.txt' USING PigStorage();
+myinput = LOAD '/Users/khorda/git/BigData/Bigdata-project1/src/resources/esempio.txt' USING PigStorage(',');
 
-del_date = FOREACH myinput GENERATE $1 ..;
+coppie = FOREACH myinput GENERATE FLATTEN(project1.udf.Accoppia($1 ..));
 
-bag = FOREACH date_del GENERATE TOBAG(*);
+raggruppati = GROUP coppie BY e1,e2;
 
-coppie = FOREACH bag GENERATE project1.udf.Accoppia();
-
-
+contati = FOREACH raggruppati GENERATE ($0,SIZE($1));
 
 
 
 
 
 
-
-
-A =  FOREACH coppie GENERATE TOBAG(*);
-B =  FOREACH A GENERATE FLATTEN(TOBAG(*));
-
-group = GROUP B BY $0;
