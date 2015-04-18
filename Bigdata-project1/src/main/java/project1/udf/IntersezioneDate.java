@@ -32,7 +32,7 @@ public class IntersezioneDate extends EvalFunc<Tuple>{
 			Tuple output = mTupleFactory.newTuple(3);
 			output.set(0, input.get(0));
 			output.set(1, input.get(1));
-			double j = (Double) input.get(2);
+			double j  = Long.valueOf((Long) input.get(2)).doubleValue();
 
 			
 			DataBag bag = (DataBag) input.get(3);
