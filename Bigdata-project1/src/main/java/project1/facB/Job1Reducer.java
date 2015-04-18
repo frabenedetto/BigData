@@ -1,6 +1,7 @@
 package project1.facB;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -19,7 +20,7 @@ public class Job1Reducer extends Reducer<Text, IntWritable, Text, IntWritable>{
 			sum+=value.get();
 		}
 		
-		ctx.write(arg0, new IntWritable(sum));
+		ctx.write(new Text(arg0), new IntWritable(sum));
 		
 	}
 	

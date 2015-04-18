@@ -2,7 +2,6 @@ package project1.facB;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -11,7 +10,6 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-
 
 public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 
@@ -40,7 +38,6 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 			productSets.add(new HashSet<HashSet<String>>());
 		}
 		
-		
 		//copia dei token per fare il primo accoppiamento
 		List<String> tokensCopy = new ArrayList<String>(tokens);
 		
@@ -55,8 +52,6 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 			}
 		}
 		
-		
-		
 		// per ogni token prendo gli insiemi di due elementi e genero insiemi di tre elementi
 		for(String s: tokens){
 			for(HashSet<String> set: productSets.get(0)){
@@ -68,8 +63,6 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 			}
 		}
 		
-		
-		
 		for(String s: tokens){
 			for(HashSet<String> set: productSets.get(1)){
 				HashSet<String> prodTmp = new HashSet<String>();
@@ -79,7 +72,6 @@ public class Job1Mapper extends Mapper<LongWritable, Text, Text, IntWritable>{
 					productSets.get(2).add(prodTmp);
 			}
 		}
-
 		
 		for(HashSet<HashSet<String>> hs: productSets){
 			for(HashSet<String> hs_s: hs){
