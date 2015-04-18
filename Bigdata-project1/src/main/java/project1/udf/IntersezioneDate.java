@@ -29,7 +29,7 @@ public class IntersezioneDate extends EvalFunc<Tuple>{
 			return null;
 		
 		try {
-			Tuple output = mTupleFactory.newTuple(4);
+			Tuple output = mTupleFactory.newTuple(3);
 			output.set(0, input.get(0));
 			output.set(1, input.get(1));
 			double j = (Double) input.get(2);
