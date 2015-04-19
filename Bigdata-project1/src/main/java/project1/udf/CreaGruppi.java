@@ -34,6 +34,7 @@ public class CreaGruppi extends EvalFunc<DataBag>{
 					prodotti.add(new String(converter.toBytes((DataByteArray) o), "UTF-8"));
 				}
 				
+				//HashSet<HashSet<String>> singoli = new HashSet<HashSet<String>>();
 				HashSet<HashSet<String>> coppie = new HashSet<HashSet<String>>();
 				HashSet<HashSet<String>> triple = new HashSet<HashSet<String>>();
 				HashSet<HashSet<String>> quadruple = new HashSet<HashSet<String>>();
