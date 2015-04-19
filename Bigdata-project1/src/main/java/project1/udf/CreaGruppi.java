@@ -26,7 +26,7 @@ public class CreaGruppi extends EvalFunc<DataBag>{
 			if (input == null || input.size() == 0)
 				return null;
 			try {
-				DataBag outerBag = mBagFactory.newDefaultBag();
+				DataBag bag = mBagFactory.newDefaultBag();
 				
 				ArrayList<String> prodotti = new ArrayList<String>();
 				
@@ -80,36 +80,54 @@ public class CreaGruppi extends EvalFunc<DataBag>{
 				}
 				
 				for(HashSet<String> c: coppie){
+					Tuple t = mTupleFactory.newTuple(2);
+					int index = 0;
 					for(String s : c){
-						DataBag innerB = mBagFactory.newDefaultBag();
-						Tuple t = mTupleFactory.newTuple((String) s);
-						innerB.add(t);
+						t.set(index, s);
+						index++;
 					}
-					outerBag.add(arg0);
+					bag.add(t);		
+				}
+				
+				for(HashSet<String> c: triple){
+					Tuple t = mTupleFactory.newTuple(3);
+					int index = 0;
+					for(String s : c){
+						t.set(index, s);
+						index++;
+					}
+					bag.add(t);		
+				}
+				
+				for(HashSet<String> c: quadruple){
+					Tuple t = mTupleFactory.newTuple(4);
+					int index = 0;
+					for(String s : c){
+						t.set(index, s);
+						index++;
+					}
+					bag.add(t);		
 				}
 
-			return outerBag;
+			return bag;
+			
 		} catch(Exception ee) {
 			throw new IOException("Caught exception processing input row ", ee);
 		}
 	}
 	public Schema outputSchema(Schema input) {
 		try{
-			Schema elementSchema = new Schema(new FieldSchema("e", DataType.CHARARRAY)); //definisco il tipo
 			
-			FieldSchema tupleSchema = new FieldSchema("t", elementSchema, DataType.TUPLE);
+			FieldSchema tupleSchema = new FieldSchema("t", new Schema(), DataType.TUPLE);
 			
-			Schema bagFieldSchemaT = new Schema(tupleSchema);
-
-			FieldSchema innerBagFieldSchema = new FieldSchema("ib", bagFieldSchemaT, DataType.BAG); //field della bag costruito come tupla sulla base dello schema precedente
-
-			Schema outerBagSchema = new Schema(innerBagFieldSchema);
+			Schema bagSchema = new Schema(tupleSchema);
 			
-			FieldSchema innerBagWrapper = new FieldSchema("it", )
+			FieldSchema bagFieldSchema = new FieldSchema("b", bagSchema, DataType.BAG);
+			
+			return new Schema(bagFieldSchema);
+			
+			
 
-			FieldSchema bagFieldSchemaB = new FieldSchema("ob", outerBagSchema, DataType.BAG); //field dello schema finale da mandare in output (1 campo, di tipo bag)
-
-			return new Schema(bagFieldSchemaB);
 		}catch (Exception e){
 			return null;
 		}
