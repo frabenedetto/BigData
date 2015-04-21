@@ -41,12 +41,12 @@ public class ProductSetsUDTF extends GenericUDTF {
 	 stringOI = (PrimitiveObjectInspector) args[0];
 	
 	
-	List<String> fieldNames = new ArrayList<String>(2);
-    List<ObjectInspector> fieldOIs = new ArrayList<ObjectInspector>(2);
+	List<String> fieldNames = new ArrayList<String>(1);//era 2
+    List<ObjectInspector> fieldOIs = new ArrayList<ObjectInspector>(1);//era 2
     fieldNames.add("memberA");
-    fieldNames.add("memberB");
+    //fieldNames.add("memberB");
     fieldOIs.add(PrimitiveObjectInspectorFactory.javaStringObjectInspector);
-    fieldOIs.add(PrimitiveObjectInspectorFactory.javaStringObjectInspector);
+    //fieldOIs.add(PrimitiveObjectInspectorFactory.javaStringObjectInspector);
     return ObjectInspectorFactory.getStandardStructObjectInspector(fieldNames, fieldOIs);
 
 }
