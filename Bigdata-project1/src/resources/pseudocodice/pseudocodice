@@ -197,3 +197,15 @@ Reduce(Text el, Int[] arr):
 	foreach(i in arr):
 		sum += i;
 	emit(el,sum);
+	
+	
+STAGE II:
+
+Map(Text line):
+	
+Reduce(Int i, Text[] arr):
+	sum = 0;
+	foreach(e in arr):
+		sum++;
+	emit(i, sum); // i rappresenta la cardinalita' degli insiemi di elementi in arr
+	
