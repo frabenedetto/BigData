@@ -2,12 +2,14 @@ esercizio 1:
 
 STAGE I:
 
+//da t1,a,b; t2,b,c passa a a->[1], b->[1,1], c->[1]
 Map(Text line) :
 	String[] products = Tokenize(line, ',');
 	//i parte da 1 perchè non prendo la data
 	for(i=1;i<products.length;i++)
 		emit(products[i], 1);
 
+da a->[1], b->[1,1], c->[1] passa a a->[1], b->[2], c->[1]
 Reduce(String product, int[] counts):
 	int sum = 0;
 	for each c in counts:
@@ -16,11 +18,13 @@ Reduce(String product, int[] counts):
 
 STAGE II:
 
+//da a->[1], b->[2], c->[1] passa a 2->[b], 1->[a,c]; legge l'input e ordina decresc. le chiavi
 //per l'ordinamento discendente è stato usato un apposito comparatore settato nel main
 Map(String product, int quantity)
 	foreach input_couple:
 		emit(quantity, product);
 
+//da 2->[b], 1->[a,c] passa a b->2, a->1, c->1; 
 Reduce(int quantity, String[] products):
 	foreach product in products:
 		emit(product, quantity);
@@ -30,6 +34,7 @@ esercizio 2:
 
 STAGE I:
 
+//da "t1,a,b; t2,b,c;" genera "a->[m1], b->[m1,m1], c->[m1]", solo se t1 e t2 sono date che cadono nel primo trimestre. Inoltre a t1 e t2 viene tolto il giorno(vengono trasformate in m).
 Map(Text line) :
 	String[] bill = Tokenize(line, ',');
 	//verifica della data(che sta in bill[0])
@@ -39,6 +44,7 @@ Map(Text line) :
 		for(i=1;i<bill.length;i++)
 			emit(bill[i], date);
 
+//da "a->[m1], b->[m1,m1], c->[m1]" genera a-> m1:1, b->m1:2, c->m1:1. In questo esempio si è ipotizzato che le date nello scontrino di partenza appartenessero tutte allo stesso mese, il quale cade nel primo trimestre
 Reduce(String product, String[] dates ):
 	//conta la quantità venduta del prodotto in ogni mese del trimestre
 	foreach(date: dates):
@@ -64,6 +70,7 @@ esercizio 3:
 
 STAGE I:
 
+//da t1,a,b; t2,b,a,c genera (a,b)->[1,1], (b,c)->[1], (a,c)->[1]
 Map(Text line):
 	String[] bill = Tokenize(line, ',');
 	//parto da i=1 perchè la data non mi serve
@@ -76,14 +83,14 @@ Map(Text line):
 					emit(ProductPair(product2, product1), 1);
 				else
 					emit(ProductPair(product2, product1),1);
-
+//somma gli uno
 Reduce(ProductPair pair, int[] counts):
 	int sum = 0;
 	for each c in counts:
 		sum += c;
 	emit(pair, sum);
 
-STAGE II:
+STAGE II(ordina e filtra):
 
 Map(ProductPair pair, int quantity):
 	emit(pair, quanitity);
@@ -101,6 +108,7 @@ esercizio facoltativo A:
 
 STAGE I:
 
+//da t1,a,b; t2,b,a,c genera (a,a)->[1,1], (b,b)->[1,1], (c,c)->[1],(a,b)->[1,1], (b,c)->[1], (a,c)->[1]
 Map(Text line):
 	String[] bill = Tokenize(line, ',');
 	//parto da i=1 perchè la data non mi serve
@@ -114,6 +122,7 @@ for(i=1;i<bill.length;i++)
 				else
 					emit(ProductPair(product2, product1),1);
 
+//somma gli uno
 Reduce(ProductPair pair, int[] counts):
 	int sum = 0;
 	for each c in counts:
@@ -122,11 +131,12 @@ Reduce(ProductPair pair, int[] counts):
 
 STAGE II:
 
-//da a,b ->2 genera a->(b,2) e b->(a,2)
+//da a,b ->2 genera a->(b,2) e b->(a,2), per ogni coppia chiave-valore letta dall'input del I stage.
 Map(String product1, String product2, int quantity):
 	emit(product1, Product2Quantity(product2, quantity));
 	emit(product2, Product2Quantity(product1, quantity));
 
+//da a->[(a,2),(b,2),(c,1)] genera a,b->100%, a,c->50%. le coppie che nell'output finale non compaiono significa che non sono mai state vendute insieme, ovvero le coppie con 0% non vengono scritte
 Reduce(String product1, Product2Quantity[] p2qs):
 	//prendi dalla lista delle coppie prodotto-quantità, la coppia relativa a product1. es a->[(a,2),(b,3)..] prendo (a,2) e la sua quantità(2 nell'esempio) la setto come denominatore
 	foreach(p2q in p2qs)
