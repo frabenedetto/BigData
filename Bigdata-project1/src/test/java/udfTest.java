@@ -1,4 +1,4 @@
-import project1.udf.*;
+import project1.pig.udf.*;
 
 
 public class udfTest {

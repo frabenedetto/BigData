@@ -1,4 +1,4 @@
-package project1.udf;
+package project1.pig.udf;
 
 import java.io.IOException;
 import java.util.ArrayList;

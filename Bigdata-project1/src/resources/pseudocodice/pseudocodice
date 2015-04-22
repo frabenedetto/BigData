@@ -146,3 +146,54 @@ Reduce(String product1, Product2Quantity[] p2qs):
 	foreach(p2q in p2qs and p2q.getProduct!=product1):
 		double numeratore = p2q.getQuantity;
 		emit((product1, p2q.getProduct), (numeratore/denominatore)*100);
+		
+esercizio 5:
+
+STAGE I:
+
+//da a,b,c genero (a,b)->1,(a,c)->1,(b,c)->1,(a,b,c)->1 per ogni line in input
+Map(Text line):
+	//creo i contenitori che conterranno i sottoinsiemi di cardinalita' 2,3,4; tali contenitori non devono essere ordinati
+	//e devono garantire l'unicita' degli elementi contenuti
+	Set<Set<String>> coppie;
+	Set<Set<String>> triple;
+	Set<Set<String>> quadruple;
+	products[] = tokenize(line);
+	
+	//per ogni prodotto nella riga
+	foreach(product1 in products):
+		//lo accoppio con gli stessi prodotti
+		foreach(product2 in products):
+			//la coppia deve essere formata da elementi diversi
+			if(product1 != product2):
+				//l'uso dei Set mi garantisce l'unicita' di ogni coppia all'interno del contenitore
+				coppie.add(Set<String> (product1,product2));
+
+	//associo i singoli elementi con le coppie per generare le triple
+	foreach(product1 in products):
+		foreach(coppia in coppie):
+			if(!coppia.contains(product1)):
+				triple.add(coppia.add(product1));
+				
+	//associo i singoli elementi con le triple per generare le quadruple
+	foreach(product1 in products):
+		foreach(tripla in triple):
+			if(!tripla.contains(product1)):
+				quadruple.add(tripla.add(product1));
+	
+	foreach(coppia in coppie)
+		//la funzione toString genera una stringa come concatenazione di stringhe ordinate lessicograficamente separate da una virgola
+		emit(toString(coppia));
+		
+	foreach(tripla in triple)
+		emit(toString(tripla));
+		
+	foreach(quadrupla in quadruple)
+		emit(toString(quadrupla));
+	
+//da ((a,b), [1,1,...,1]) genero (a,b)->N
+Reduce(Text el, Int[] arr):
+	sum = 0;
+	foreach(i in arr):
+		sum += i;
+	emit(el,sum);
