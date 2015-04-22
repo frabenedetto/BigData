@@ -1,0 +1,138 @@
+esercizio 1:
+
+STAGE I:
+
+Map(Text line) :
+	String[] products = Tokenize(line, ',');
+	//i parte da 1 perchè non prendo la data
+	for(i=1;i<products.length;i++)
+		emit(products[i], 1);
+
+Reduce(String product, int[] counts):
+	int sum = 0;
+	for each c in counts:
+		sum += c;
+	emit(product, sum);
+
+STAGE II:
+
+//per l'ordinamento discendente è stato usato un apposito comparatore settato nel main
+Map(String product, int quantity)
+	foreach input_couple:
+		emit(quantity, product);
+
+Reduce(int quantity, String[] products):
+	foreach product in products:
+		emit(product, quantity);
+
+
+esercizio 2:
+
+STAGE I:
+
+Map(Text line) :
+	String[] bill = Tokenize(line, ',');
+	//verifica della data(che sta in bill[0])
+	if(isInFirstTrimester(bill[0])):
+		//elimina l'informazione del giorno dalla data
+		date = bill[0].substring;
+		for(i=1;i<bill.length;i++)
+			emit(bill[i], date);
+
+Reduce(String product, String[] dates ):
+	//conta la quantità venduta del prodotto in ogni mese del trimestre
+	foreach(date: dates):
+		if(isJanuary(date))
+			januaryCounter++;
+		else if (isFebruary(date))
+			febCounter++;
+		else
+			marchCounter++;
+	//genera la stringa data1:quantita, data2:quantità..
+	String dates2quantity = "";
+	foreach(date: dates):
+		if(isJanuary(date))
+			dates2quantity+=date.concat(januaryCounter);
+		else if (isFebruary(date))
+			dates2quantity+=date.concat(febCounter);
+		else
+			dates2quantity+=date.concat(marchCounter);
+	//emetti il risultato
+	emit(product, dates2quantity);
+
+esercizio 3:
+
+STAGE I:
+
+Map(Text line):
+	String[] bill = Tokenize(line, ',');
+	//parto da i=1 perchè la data non mi serve
+		for(i=1;i<bill.length-1;i++)
+			for(j=i+1;bill.length;j++)
+				product1 = bill[i];
+				product2 = bill[j];
+				//crea la coppia di prodotti mettendo sulla sinistra quello che viene prima dei due secondo l'ordine lessicografico
+				if(product1.compareTo(product2))
+					emit(ProductPair(product2, product1), 1);
+				else
+					emit(ProductPair(product2, product1),1);
+
+Reduce(ProductPair pair, int[] counts):
+	int sum = 0;
+	for each c in counts:
+		sum += c;
+	emit(pair, sum);
+
+STAGE II:
+
+Map(ProductPair pair, int quantity):
+	emit(pair, quanitity);
+
+//è 1 unico reducer
+Reduce(ProductPair pair, int[] quantity):
+	//coda di priorità lunga 10, che contiene le coppie di elementi ordinati decrescentemente per quantità 
+	PriorityQueue<ProductPair2Quantity> queue;
+	queue.add(ProductPair2Quantity(pair, quantity[0]));
+	if(queue.size>10)
+		queue.removeLast;
+
+
+esercizio facoltativo A:
+
+STAGE I:
+
+Map(Text line):
+	String[] bill = Tokenize(line, ',');
+	//parto da i=1 perchè la data non mi serve
+for(i=1;i<bill.length;i++)
+			for(j=i;bill.length;j++)
+				product1 = bill[i];
+				product2 = bill[j];
+				//crea la coppia di prodotti mettendo sulla sinistra quello che viene prima dei due secondo l'ordine lessicografico
+				if(product1.compareTo(product2))
+					emit(ProductPair(product2, product1), 1);
+				else
+					emit(ProductPair(product2, product1),1);
+
+Reduce(ProductPair pair, int[] counts):
+	int sum = 0;
+	for each c in counts:
+		sum += c;
+	emit(pair, sum);
+
+STAGE II:
+
+//da a,b ->2 genera a->(b,2) e b->(a,2)
+Map(String product1, String product2, int quantity):
+	emit(product1, Product2Quantity(product2, quantity));
+	emit(product2, Product2Quantity(product1, quantity));
+
+Reduce(String product1, Product2Quantity[] p2qs):
+	//prendi dalla lista delle coppie prodotto-quantità, la coppia relativa a product1. es a->[(a,2),(b,3)..] prendo (a,2) e la sua quantità(2 nell'esempio) la setto come denominatore
+	foreach(p2q in p2qs)
+		if(p2q.getProduct=product1)
+			double denominatore = p2q.getQuantity ;
+	//ora per ogni coppia prodotto-quantità con prodotto diverso da product1 effettua il rapporto e genera la percentuale
+	foreach(p2q in p2qs and p2q.getProduct!=product1):
+		double numeratore = p2q.getQuantity;
+		emit((product1, p2q.getProduct), (numeratore/denominatore)*100);
