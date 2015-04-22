@@ -71,53 +71,47 @@ public class ProductSetsUDTF extends GenericUDTF {
 	    
 	    String[] members = document.split(",");
 	    
-	    
-	    
 		HashSet<HashSet<String>> coppie = null, triple = null, quadruple = null;
 		
 	    HashSet<HashSet<String>> singoli = new HashSet<HashSet<String>>();
 	    
-	    for(String s : members){
-	    	if(s.matches("-")) continue;
+	    for(int i=1; i<members.length; i++){
 	    	HashSet<String> tmp = new HashSet<String>();
-	    	tmp.add(s);
+	    	tmp.add(members[i]);
+	    	singoli.add(tmp);
 	    }
-
+	    
+	    int numElementi = singoli.size();
 		
-		if(members.length > 1){
+		if(numElementi > 1){
 			
 			coppie = buildSet(singoli, singoli, 2);
 			
-			if(members.length > 2){
+			for(HashSet<String> ele: coppie){
+				forward(new Object[] {buildString(ele)});
+			}
+			
+			if(numElementi > 2){
 				
 				triple = buildSet(singoli, coppie, 3);
 				
-				if(members.length > 3){
+				for(HashSet<String> ele: triple){
+					forward(new Object[] {buildString(ele)});
+				}
+				
+				if(numElementi > 3){
 					
 					quadruple = buildSet(singoli, triple, 4);
+					
+					for(HashSet<String> ele: quadruple){
+						forward(new Object[] {buildString(ele)});
+					}
 					
 				}
 				
 			}
 			
-		}
-		
-		if(coppie != null)
-		for(HashSet<String> ele: coppie){
-			forward(new Object[] {buildString(ele)});
-		}
-		
-
-		if(triple != null)
-		for(HashSet<String> ele: triple){
-			forward(new Object[] {buildString(ele)});
-		}
-			
-		if(quadruple != null)
-		for(HashSet<String> ele: quadruple){
-			forward(new Object[] {buildString(ele)});
-		}
-			
+		}			
 		
 	} 
 
@@ -145,7 +139,8 @@ public class ProductSetsUDTF extends GenericUDTF {
 	private String buildString(HashSet<String> e){
 		StringBuilder ret = new StringBuilder();
 		boolean first = true;
-		ArrayList<String> tmp = new ArrayList<String>(e);
+		ArrayList<String> tmp = new ArrayList<String>();
+		tmp.addAll(e);
 		Collections.sort(tmp);
 
 		for(String el : tmp){
