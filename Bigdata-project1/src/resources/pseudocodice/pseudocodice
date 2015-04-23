@@ -191,7 +191,7 @@ Map(Text line):
 	foreach(quadrupla in quadruple)
 		emit(toString(quadrupla));
 	
-//da ((a,b), [1,1,...,1]) genero (a,b)->N
+//da (a,b)->[1,1,...,1] genero (a,b)->N
 Reduce(Text el, Int[] arr):
 	sum = 0;
 	foreach(i in arr):
@@ -200,9 +200,12 @@ Reduce(Text el, Int[] arr):
 	
 	
 STAGE II:
-
+// da (a,b,c)->N genero |(a,b,c)|->(a,b,c)
 Map(Text line):
-	
+	input[] = tokenize(line) //in 0 compare il set di prodotti, in 1 
+	emit(input[0].size,input[1]);
+
+//da M->[(a,b,c),..,(x,y,z)] genero M->K
 Reduce(Int i, Text[] arr):
 	sum = 0;
 	foreach(e in arr):

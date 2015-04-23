@@ -11,9 +11,3 @@ contati = FOREACH raggruppati GENERATE $0,COUNT($1);
 ordinati = ORDER contati BY $1;
 
 primi_dieci = LIMIT ordinati 10; 
-
-
-
-
-
-
