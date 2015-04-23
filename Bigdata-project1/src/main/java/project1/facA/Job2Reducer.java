@@ -33,7 +33,7 @@ public class Job2Reducer extends Reducer<Text, Product2QuantityPair, Text, IntWr
 				for(Product2QuantityPair pq: pairs) {
 					ProductPair pp = new ProductPair(arg0, pq.getProduct());
 					double den = pq.getQuantity().get();
-					int fraction = (int)((num/den)*100);
+					int fraction = (int)((den/num)*100); //test
 					ctx.write(new Text(pp.toString()), new IntWritable(fraction));
 				}
 			}
