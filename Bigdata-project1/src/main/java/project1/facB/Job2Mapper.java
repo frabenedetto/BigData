@@ -13,7 +13,7 @@ public class Job2Mapper extends Mapper<LongWritable, Text, IntWritable, Text>{
 	public void map(LongWritable arg0, Text value,
 			Context ctx) throws IOException, InterruptedException {
 		
-		StringTokenizer t = new StringTokenizer(value.toString(), " ", false);
+		StringTokenizer t = new StringTokenizer(value.toString(), ")", false);
 		int n = 0; String chiave = "";
 		if(t.hasMoreTokens()) chiave = t.nextToken();
 		n = new StringTokenizer(chiave,",",false).countTokens();
