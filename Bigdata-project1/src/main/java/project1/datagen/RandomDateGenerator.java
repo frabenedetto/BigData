@@ -10,17 +10,17 @@ public class RandomDateGenerator {
 
         int year = randBetween(2015, 2015);
 
-        gc.set(gc.YEAR, year);
+        gc.set(GregorianCalendar.YEAR, year);
 
-        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
+        int dayOfYear = randBetween(1, gc.getActualMaximum(GregorianCalendar.DAY_OF_YEAR));
 
-        gc.set(gc.DAY_OF_YEAR, dayOfYear);
+        gc.set(GregorianCalendar.DAY_OF_YEAR, dayOfYear);
         
         int month = randBetween(1,12);
         
         
 
-        return (gc.get(gc.YEAR) + "-" + month + "-" + gc.get(gc.DAY_OF_MONTH));
+        return (gc.get(GregorianCalendar.YEAR) + "-" + month + "-" + gc.get(GregorianCalendar.DAY_OF_MONTH));
 
     }
 

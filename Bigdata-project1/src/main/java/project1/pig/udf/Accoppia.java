@@ -3,7 +3,6 @@ import java.io.IOException;
 
 import org.apache.pig.EvalFunc;
 import org.apache.pig.StoreCaster;
-import org.apache.pig.backend.hadoop.hbase.HBaseBinaryConverter;
 import org.apache.pig.builtin.Utf8StorageConverter;
 import org.apache.pig.data.BagFactory;
 import org.apache.pig.data.DataBag;

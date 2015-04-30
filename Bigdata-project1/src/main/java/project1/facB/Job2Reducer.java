@@ -15,7 +15,7 @@ public class Job2Reducer extends Reducer<IntWritable, Text, Text, IntWritable>{
 		String tipo = new String(Integer.toString(arg0.get()));
 		
 		int sum =0;
-		for(Text t : arg1){
+		for(@SuppressWarnings("unused") Text t : arg1){
 			sum++;
 		}
 		
